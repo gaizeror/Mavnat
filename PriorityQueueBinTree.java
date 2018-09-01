@@ -77,7 +77,7 @@ public class PriorityQueueBinTree<type extends Comparable<type>> {
 
         else if (iterator.getRight() != null ) // if not the largest
         {
-            if (iterator.getRight().getRight() != null) { // if child not the largest
+            if (iterator.getRight().getRight() != null || iterator.getRight().getLeft() != null) { // if child not the largest
                 return dequeue(iterator.getRight());
             }
             else // if child the largest
@@ -87,14 +87,25 @@ public class PriorityQueueBinTree<type extends Comparable<type>> {
                 return to_return;
             }
         }
-        else // if the largerst
+        else
         {
-            BinaryTreeNode to_return = this.tree.getHead();
-            this.tree.setHead(this.tree.getHead().getLeft());
-            to_return.setLeft(null);
-            return to_return;
-        }
+            if (iterator == this.tree.getHead()){ // if the largest
+                BinaryTreeNode to_return = this.tree.getHead();
+                this.tree.setHead(this.tree.getHead().getLeft());
+                to_return.setLeft(null);
+                return to_return;
+            }
+            else{ //if more than one duplicate of iterator side leaf exists
+                if(iterator.getLeft().getLeft() != null)
+                    return dequeue( iterator.getLeft());
+                else {
+                    BinaryTreeNode to_return = iterator.getLeft();
+                    iterator.setLeft(null);
+                    return to_return;
+                }
 
+            }
+        }
     }
     public boolean isEmpty()
     {
